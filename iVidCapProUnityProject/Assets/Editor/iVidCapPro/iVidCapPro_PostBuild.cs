@@ -54,11 +54,15 @@ public class iVidCapPro_PostBuild {
 		// For versions <  4.2 it's AppController.mm
 		// For versions >= 4.2 it's UnityAppController.mm
 		string appControllerName;
-		if (string.Compare(Application.unityVersion,"4.2") == -1) 
+		/*if (string.Compare(Application.unityVersion,"4.2") == -1) 
 			appControllerName = "AppController.mm";
 		else
 			appControllerName = "UnityAppController.mm";
-		
+		*/
+		//fixed 4 unity 2017.1
+		appControllerName = "UnityAppController.mm";
+
+
 		string appControllerPath = pathToBuiltProject + Path.DirectorySeparatorChar + "Classes" +
 			Path.DirectorySeparatorChar + appControllerName;
 		string appControllerBackupPath = pathToBuiltProject + Path.DirectorySeparatorChar + "Classes" +
@@ -124,7 +128,7 @@ public class iVidCapPro_PostBuild {
 		// Update AppController data string.
 		// Set the substitution string based on the Unity Version.
 		string substString = "";
-		if (string.Compare(Application.unityVersion,"4.1") == -1) 
+		/*if (string.Compare(Application.unityVersion,"4.1") == -1) 
 			substString = contextFunction_1 + insertionPointPattern;
 		else if (string.Compare(Application.unityVersion,"4.5") == -1) 
 			substString = contextFunction_2 + insertionPointPattern;
@@ -132,11 +136,13 @@ public class iVidCapPro_PostBuild {
 			substString = contextFunction_3;
 		else
 			substString = contextFunction_4;
-			
+		*/
+		//fixed 4 unity 2017.1
+		substString = contextFunction_4;
 		// Check to see if AppController already contains our function.
 	    if (!Regex.IsMatch(fileString, @"ivcp_UnityGetContext")) {
 			// We need to add the function.  Look for our insertion point.
-			if (string.Compare(Application.unityVersion,"4.5") == -1) {
+			/*if (string.Compare(Application.unityVersion,"4.5") == -1) {
 				// For versions prior to 4.5, we're looking for a specific insertion point.
 				if (Regex.IsMatch (fileString, insertionPointPattern))  {
 					UnityEngine.Debug.Log("iVidCapPro_PostBuild: Insertion point found. Updating " + appControllerName + "."); 
@@ -155,7 +161,10 @@ public class iVidCapPro_PostBuild {
 
 				// Write modified AppController back to file.
 				WriteStringIntoFile(fileString, appControllerPath);
-			}
+			}*/
+		//fixed 4 unity 2017.1
+				fileString += substString;
+				WriteStringIntoFile(fileString, appControllerPath);
 		} else {
 			// The function is already present.  No action needed.
 			UnityEngine.Debug.Log("iVidCapPro_PostBuild: ivcp_UnityGetContext function already present. Nothing done."); 
